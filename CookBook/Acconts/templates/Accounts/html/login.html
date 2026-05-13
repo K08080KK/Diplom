@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Вхід{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'Accounts/css/login.css' %}">
+{% endblock %}
+{% block content %}
+<main class="auth-page">
+    <div class="auth-card">
+        <h1>Вхід</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-fields">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="auth-button">Увійти</button>
+        </form>
+        <div class="auth-footer">
+            <p>Немає акаунту? <a href="{% url 'register' %}">Створити акаунт</a></p>
+        </div>
+    </div>
+</main>
+{% endblock %}

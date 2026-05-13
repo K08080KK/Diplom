@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% csrf_token %}
+
+{% block title %}Профіль{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'Accounts/css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<main>
+    <header class="account-header">
+        <h1>Ваші збережені рецепти</h1>
+    </header>
+
+    <div class="saved-recipes">
+        {% for recipe in recipes %}
+            <a href="{% url 'recipe_detail' recipe.id %}" class="recipe-card-link" style="text-decoration: none; color: inherit;">
+                <div class="recipe-card-small" data-recipe-id="{{ recipe.id }}">
+                    <div class="delete-btn">&times;</div> 
+                    
+                    {% if recipe.image %}
+                        <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}">
+                    {% else %}
+                        <img src="{% static 'default_recipe.jpg' %}" alt="{{ recipe.title }}">
+                    {% endif %}
+                    <h3>{{ recipe.title }}</h3>
+                </div>
+            </a>
+        {% empty %}
+            <div class="empty-state">
+                <p>У вас немає поки що рецептів.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="account-footer">
+        <a href="{% url 'logout' %}" class="logout-link-bottom">Вийти</a>
+    </div>
+</main>
+
+{% block scripts %}
+    <script src="{% static 'Accounts/js/confirm_modal.js' %}"></script>
+    <script src="{% static 'Accounts/js/delete_recipe.js' %}"></script>
+{% endblock %}
+{% endblock %}

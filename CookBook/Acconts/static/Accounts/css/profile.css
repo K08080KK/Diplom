@@ -1,0 +1,156 @@
+.account-header {
+    text-align: center;
+    margin: 40px 20px 20px 20px;
+}
+
+.account-header h1 {
+    font-size: 2.8em;
+    margin: 0;
+    color: #6fa8dc;
+}
+
+.saved-recipes {
+    max-width: 900px;
+    margin: 0 auto 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+    padding: 20px;
+}
+
+.recipe-card-small {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.3s;
+}
+
+.recipe-card-small:hover {
+    transform: translateY(-5px);
+}
+
+.recipe-card-small img {
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+}
+
+.recipe-card-small h3 {
+    margin: 15px;
+    color: #6fa8dc;
+    font-size: 1.2em;
+    text-align: center;
+    padding-right: 40px; 
+    padding-left: 40px;  
+    word-wrap: break-word; 
+    line-height: 1.3;    
+}
+
+/* Стили для кнопки удаления */
+.delete-btn {
+    /* Позиционирование: Справа вверху */
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    /* Форма и фон: Темный полупрозрачный круг */
+    width: 32px;       /* Фиксированная ширина */
+    height: 32px;      /* Фиксированная высота */
+    background-color: rgba(0, 0, 0, 0.6); /* Черный с прозрачностью 60% */
+    border-radius: 50%; /* Делает из квадрата круг */
+
+    /* Стили самого крестика: Белый цвет и центрирование */
+    color: #ffffff;
+    font-size: 24px;
+    line-height: 1; /* Важно для ровного вертикального центрирования */
+
+    /* Используем Flexbox для идеального центрирования крестика внутри круга */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* Прочие настройки */
+    cursor: pointer;
+    z-index: 20; /* Убедимся, что он поверх всего */
+    user-select: none; /* Чтобы не выделялся как текст */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Небольшая тень для объема (по желанию) */
+}
+
+/* Эффекты при наведении */
+.delete-btn:hover {
+    background-color: rgba(0, 0, 0, 0.85); /* Фон становится темнее */
+    transform: scale(1.1); /* Кнопка немного увеличивается */
+    /* color: #ff6b6b;  <- Раскомментируйте, если хотите, чтобы крестик краснел */
+}
+
+.empty-state {
+    text-align: center;
+    grid-column: 1 / -1;
+    color: #777;
+    padding: 40px;
+}
+
+/* === КНОПКА ВЫХОДА ВНИЗУ === */
+.account-footer {
+    text-align: center;
+    margin-bottom: 60px; /* Отступ от футера сайта */
+    padding: 20px;
+}
+
+.logout-link-bottom {
+    display: inline-block;
+    padding: 12px 35px;
+    color: #e74c3c; /* Красный цвет для выхода */
+    text-decoration: none;
+    font-weight: bold;
+    border: 2px solid #e74c3c;
+    border-radius: 12px;
+    transition: 0.3s;
+}
+
+.logout-link-bottom:hover {
+    background: #e74c3c;
+    color: white;
+}
+
+/* Базовое состояние ссылки-контейнера */
+.recipe-card-link {
+    transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s, max-width 0.4s ease;
+    display: block; /* Убедимся, что это блочный элемент в сетке */
+}
+
+/* Класс, который мы добавляем через JS перед удалением */
+.recipe-card-link.removing {
+    opacity: 0;
+    transform: scale(0.5); /* Карточка уменьшается */
+    pointer-events: none;  /* Чтобы нельзя было нажать во время удаления */
+}
+
+
+/* === Адаптация для мобильных устройств (до 600px) === */
+@media (max-width: 600px) {
+    /* Делаем заголовок меньше, чтобы он не занимал весь экран */
+    .account-header h1 {
+        font-size: 1.8em;
+        margin-top: 20px;
+    }
+
+    .saved-recipes {
+        /* Принудительно выстраиваем в одну колонку */
+        grid-template-columns: 1fr; 
+        gap: 20px;
+        padding: 15px;
+    }
+
+    .recipe-card-small img {
+        height: 200px; /* На мобилках картинку можно сделать чуть выше для красоты */
+    }
+
+    .account-header {
+        margin: 20px 10px;
+    }
+}

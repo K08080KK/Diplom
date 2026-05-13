@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Приготування{% endblock %}
+
+{% block content %}
+    <main>
+        {% csrf_token %}
+        <header>
+            <h1>Оберіть інгредієнти!</h1>
+            <p>Обирайте інгредієнти або введіть свої, щоб згенерувати смачний рецепт.</p>
+        </header>
+
+        <div class="input-section">
+            <input type="text" id="ingredients" placeholder="Введіть інгредієнти: напр., курка, картопля, морква">
+            <button id="generateBtn">Приготувати</button>
+        </div>
+
+        <div class="ingredients-list">
+            {% for category in categories %}
+                <div class="ingredient-item ingredient-category" data-category="{{ category.name }}" data-category-id="{{ category.id }}">
+                    <span class="arrow">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M9 18L15 12L9 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </span>
+                    {{ category.name }}
+                </div>
+                
+                <div class="modal" id="modal-{{ category.id }}">
+                    {% for product in category.products.all %}
+                        <div>{{ product.name }}</div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="recipe-card" id="loader" style="display: none; flex-direction: column; align-items: center;">
+            <img src="{% static '/loader/Cooking.gif' %}">
+            <p style="margin-top: 15px; font-size: 20px;">Готуємо...</p>
+        </div>
+
+        <div class="recipe-card" id="recipeCard" style="display:none;">
+            <img id="recipeImage" src="" alt="Зображення рецепту">
+            <div class="recipe-content">
+                <h2 id="recipeTitle">Назва рецепту</h2>
+                <ul id="ingredientsList"></ul>
+                <div id="time" class="time"></div>
+                <ol id="recipeSteps"></ol>
+            </div>
+
+            {% if user.is_authenticated %}
+                <div class="recipe-comment-section">
+                    <h3>Ваш коментар:</h3>
+                    <div class="comment-container">
+                        <textarea id="commentInput" class="comment-textarea" placeholder="Додайте коментар..."></textarea>
+                        <button id="saveCommentBtn" class="btn-save">Зберегти рецепт</button>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <script src="{% static 'Cooking/js/components/modal.js' %}"></script>
+        <script type="module" src="{% static 'Cooking/js/main.js' %}"></script>
+    </main>
+{% endblock %}

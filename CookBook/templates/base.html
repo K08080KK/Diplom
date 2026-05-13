@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CookBook{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style3.css' %}">
+    <link rel="icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+    {% block styles %}{% endblock %}
+</head>
+<body>
+
+    <div class="site-header">
+        <div class="logo">CookBook</div>
+        <div class="burger-wrapper" id="burgerMenu">
+            <div class="burger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <nav id="siteNav">
+            <span class="menu-title">Меню</span>
+            <a href="/">Генератор Рецептів</a>
+            <a href="/account/profile">Особистий кабінет</a>
+        </nav>
+        <div class="menu-overlay" id="menuOverlay"></div>
+    </div>
+
+    {% block content %}{% endblock %}
+
+    <div class="site-footer">
+        <div class="footer-content">
+            <div>© 2025 Кулінарна Книга</div>
+        </div>
+    </div>
+    <script src="{% static 'js/burger_menu.js' %}"></script>
+</body>
+</html>

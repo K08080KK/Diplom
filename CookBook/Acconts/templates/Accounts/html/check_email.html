@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Перевірте пошту{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static '/Accounts/css/email.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="auth-page">
+    <div class="auth-card status-card success-card">
+        <div class="status-icon success">📧</div>
+        <h2>Перевірте пошту</h2>
+        <p>Ми відправили вам лист із посиланням для підтвердження. Будь ласка, перейдіть за ним, щоб завершити реєстрацію.</p>
+        
+        <div class="auth-footer">
+            <p>Не отримали лист? <br>Перевірте папку <b>Спам</b> або <a href="{% url 'register' %}">спробуйте ще раз</a>.</p>
+            <br>
+            <a href="/" class="auth-button secondary">На головну</a>
+        </div>
+    </div>
+</main>
+{% endblock %}

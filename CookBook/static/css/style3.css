@@ -1,0 +1,629 @@
+/* === 1. ГЛОБАЛЬНЫЕ СТИЛИ И СБРОС === */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    /* ВАЖНО: Убирает горизонтальный скролл из-за выезжающего меню */
+    overflow-x: hidden; 
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f4f8;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Стили заголовков на страницах */
+main header {
+    text-align: center;
+    margin: 40px 20px 20px 20px;
+}
+
+main header h1 {
+    font-size: 2.8em;
+    margin: 0;
+    color: #6fa8dc;
+}
+
+main header p {
+    margin: 10px 0 0 0;
+    color: #555;
+    font-size: 1.1em;
+}
+
+/* === 2. ШАПКА (HEADER) === */
+.site-header {
+    width: calc(100% - 40px);
+    margin: 20px;
+    background: linear-gradient(90deg, #89c4f4, #6fa8dc);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    position: relative; /* Нужно для z-index */
+    z-index: 100;
+}
+
+.site-header .logo {
+    font-size: 1.9em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s;
+    z-index: 2001; /* Логотип всегда поверх меню */
+}
+
+.site-header .logo:hover {
+    transform: scale(1.05);
+}
+
+.site-header nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 25px;
+    font-size: 1em;
+    font-weight: 500;
+    transition: 0.3s;
+    padding: 8px 12px;
+    border-radius: 10px;
+}
+
+.site-header nav a:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* === 3. ИНТЕРФЕЙС ГЕНЕРАТОРА (ГЛАВНАЯ) === */
+.input-section {
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 auto 40px auto;
+    padding: 0 20px;
+}
+
+.input-section input {
+    flex: 1 1 300px;
+    padding: 14px 16px;
+    font-size: 1em;
+    border-radius: 14px;
+    border: 1px solid #ddd;
+    transition: 0.3s;
+}
+
+.input-section input:focus {
+    border-color: #6fa8dc;
+    outline: none;
+    box-shadow: 0 0 10px rgba(111, 168, 220, 0.4);
+}
+
+.input-section button {
+    padding: 14px 20px;
+    background: #6fa8dc;
+    border: none;
+    border-radius: 14px;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.input-section button:hover {
+    background: #89c4f4;
+}
+
+.ingredients-list {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto 40px auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    padding: 0 20px;
+}
+
+.ingredient-category,
+.ingredient-item {
+    background: #e1f0fb;
+    border-radius: 15px;
+    padding: 12px 15px;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    transition: background 0.3s;
+    position: relative;
+}
+
+.ingredient-category:hover { background: #cde6f9; }
+
+.arrow {
+    transform: rotate(360deg);
+    margin-right: 5px;
+    transition: transform 0.3s ease 0s;
+}
+
+.ingredient-active > span { transform: rotate(450deg); }
+
+.modal {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    background: #fff;
+    border-radius: 15px;
+    padding: 10px 15px;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    scrollbar-gutter: stable both-edges;
+}
+
+.modal div { padding: 5px; cursor: pointer; }
+.modal div:hover { background: #f5f9fc; }
+.selected-check { color: #6fa8dc; margin-right: 5px; }
+
+/* === 4. КАРТОЧКА ПОЛНОГО РЕЦЕПТА === */
+.recipe-card {
+    width: 100%;
+    max-width: 700px;
+    background: #FDFDFD;
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin: 0 auto 40px auto;
+}
+
+.recipe-card img {
+    width: 100%;            /* Завжди на всю ширину картки */
+    height: 400px;         /* Фіксована висота, щоб усі картки були однаковими */
+
+    object-fit: cover;     /* КЛЮЧОВИЙ МОМЕНТ: заповнює всю площу, зберігаючи пропорції (обрізає зайве) */
+    object-position: center; /* Центрує картинку, щоб не обрізати голови/важливе */
+    
+    display: block;
+}
+.recipe-content { padding: 25px 20px; }
+.recipe-content h2 { margin: 0 0 15px 0; color: #6fa8dc; font-size: 2em; }
+
+.recipe-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.recipe-content ul li {
+    background: #e1f0fb;
+    padding: 10px 14px;
+    border-radius: 12px;
+}
+
+#recipeSteps { padding-left: 0; counter-reset: step-counter; margin: 20px 0 0 0; }
+#recipeSteps li {
+    list-style: none;
+    position: relative;
+    background: #e1f0fb;
+    margin-bottom: 15px;
+    padding: 15px 20px 15px 60px;
+    border-radius: 15px;
+}
+
+#recipeSteps li::before {
+    counter-increment: step-counter;
+    content: counter(step-counter);
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #6fa8dc;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+/* === 6. ФУТЕР (FOOTER) === */
+.site-footer {
+    width: calc(100% - 40px);
+    margin: 20px;
+    background: #6fa8dc;
+    color: white;
+    text-align: center;
+    padding: 40px 25px;
+    border-radius: 20px;
+    margin-top: auto;
+}
+
+.site-footer .footer-content {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.site-footer .social-links a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    transition: 0.3s;
+}
+
+.site-footer .social-links a:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+}
+
+/* === ФІНАЛЬНИЙ БЛОК КОМЕНТАРІВ === */
+.recipe-comment-section {
+    padding: 25px 20px 25px 20px; 
+    border-top: 2px solid #e1f0fb;
+    margin-top: 10px;
+}
+
+.recipe-comment-section h3 {
+    color: #6fa8dc;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.comment-container {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.comment-textarea {
+    background: #f8fbfe;
+    padding: 11px 16px;
+    border-radius: 14px;
+    border: 1px solid #ddd;
+    color: #333;
+    font-family: inherit;
+    font-size: 16px; 
+    line-height: 1.4;
+    resize: none; 
+    overflow: hidden;
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    min-height: 45px;
+    height: 45px;
+    transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+}
+
+.comment-textarea:focus {
+    outline: none;
+    border-color: #6fa8dc;
+    background: #fff;
+}
+
+.btn-save {
+    height: 45px;
+    padding: 0 25px;
+    background: #6fa8dc;
+    border: none;
+    border-radius: 14px;
+    color: white;
+    font-size: 1em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-save:hover {
+    background: #89c4f4;
+}
+
+/* Фон затемнения модалки */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+}
+
+.custom-confirm-modal {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .custom-confirm-modal {
+    transform: translateY(0);
+}
+
+.custom-confirm-modal h2 {
+    margin-top: 0;
+    color: #6fa8dc;
+    font-size: 1.5em;
+}
+
+.custom-confirm-modal p {
+    color: #555;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.modal-btn {
+    padding: 12px 25px;
+    border-radius: 12px;
+    border: none;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-confirm { background: #6fa8dc; color: white; }
+.btn-confirm:hover { background: #89c4f4; }
+.btn-cancel { background: #e1f0fb; color: #555; }
+.btn-cancel:hover { background: #cde6f9; }
+.menu-title {
+    display: none;
+}
+/* =========================================
+   АДАПТАЦИЯ И БУРГЕР МЕНЮ
+   ========================================= */
+
+/* Изначально скрываем бургер */
+.burger-menu {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    #loader {
+        position: fixed;       /* Фіксуємо поверх екрану */
+        top: 0;
+        left: 0;
+        width: 100%;           /* Ширина на весь екран */
+        height: 100%;          /* Висота на весь екран */
+        z-index: 9999;         /* Щоб був поверх усіх інших елементів */
+        background-color: rgba(255, 255, 255, 0.95); /* Фон (білий, трохи прозорий) */
+        
+        /* Центрування контенту (гіфки та тексту) */
+        display: none; /* За замовчуванням прихований, JS змінить на flex */
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    
+    /* 1. Глобальные правки адаптации */
+    main header h1 {
+        font-size: 2em;
+    }
+    
+    .input-section {
+        flex-direction: column;
+        padding: 0 10px;
+    }
+    
+    .input-section input,
+    .input-section button {
+        flex: 1 1 100%;
+        width: 100%;
+    }
+
+    .ingredients-list {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 0 10px;
+    }
+
+    .recipe-card {
+        margin: 0 10px 40px 10px;
+        width: auto;
+    }
+    
+    #recipeSteps li {
+        padding: 15px 15px 15px 50px;
+    }
+    
+    #recipeSteps li::before {
+        left: 10px;
+    }
+
+    .site-footer {
+        width: calc(100% - 20px);
+        margin: 10px;
+        padding: 20px 15px;
+    }
+
+    .recipe-comment-section {
+        padding-left: 20px;
+    }
+    
+    .recipe-comment-section h3 {
+        margin-left: 0;
+    }
+
+    .comment-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .btn-save {
+        width: 100%;
+    }
+
+    /* 2. СТИЛИ БУРГЕР-МЕНЮ */
+    
+    .site-header .logo {
+        z-index: 100;
+    }
+    .burger-wrapper {
+        position: relative;
+        z-index: 2100; /* На 100 выше чем nav */
+        cursor: pointer;
+        padding: 5px; /* Увеличиваем зону клика */
+    }
+
+    .burger-menu {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 30px;
+        height: 22px;
+        pointer-events: none; /* Чтобы клик пролетал на wrapper */
+    }
+
+    .burger-menu span {
+        display: block;
+        height: 3px;
+        width: 100%;
+        background: white;
+        border-radius: 4px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Плавная анимация */
+    }
+
+    /* 3. ВЫЕЗЖАЮЩАЯ ПАНЕЛЬ */
+    .site-header nav {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        height: 100vh;
+        background: linear-gradient(135deg, #89c4f4, #6fa8dc);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start; /* Выравнивание по левому краю */
+        padding: 40px 30px;      /* Отступы внутри меню */
+        transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: -10px 0 30px rgba(0,0,0,0.2);
+        z-index: 1500;
+    }
+
+    .site-header nav.active {
+        right: 0;
+    }
+
+    /* 4. ЗАГОЛОВОК "МЕНЮ" ВНУТРИ ПАНЕЛИ */
+    .menu-title {
+        display: block;
+        color: white;
+        font-size: 1.8em;
+        font-weight: bold;
+        margin-bottom: 30px; /* Отступ от заголовка до ссылок */
+        padding-bottom: 10px;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+        width: 100%; /* Чтобы линия была на всю ширину */
+    }
+
+    /* 5. ССЫЛКИ МЕНЮ */
+    .site-header nav a {
+        margin: 8px 0;      /* Уменьшенный интервал */
+        margin-left: 0 !important; 
+        font-size: 1.2em;
+        font-weight: 500;
+        color: white;
+        text-decoration: none;
+        opacity: 0;
+        transform: translateX(-20px);
+        transition: 0.4s;
+    }
+
+    .site-header nav.active a {
+        opacity: 1;
+        transform: translateX(0);
+        transition-delay: 0.2s;
+    }
+
+/* 1. Средняя линия исчезает */
+    .burger-wrapper.active .burger-menu span:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+    }
+
+    /* 2. Верхняя линия опускается и поворачивается */
+    /* 9.5px = (22px высота - 3px линия) / 2 */
+    .burger-wrapper.active .burger-menu span:nth-child(1) {
+        transform: translateY(9.5px) rotate(45deg);
+    }
+
+    /* 3. Нижняя линия поднимается и поворачивается */
+    .burger-wrapper.active .burger-menu span:nth-child(3) {
+        transform: translateY(-9.5px) rotate(-45deg);
+    }
+}
+
+/* Затемняющий фон (Overlay) */
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4); /* Полупрозрачный черный */
+    backdrop-filter: blur(2px);     /* Легкое размытие контента сзади */
+    z-index: 1400;                  /* Ниже чем nav (1500), но выше контента сайта */
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease-in-out;
+}
+
+/* Показываем при активации */
+.menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}

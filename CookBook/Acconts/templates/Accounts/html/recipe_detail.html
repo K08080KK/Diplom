@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ recipe.title }}{% endblock %}
+
+{% block content %}
+<main>
+    {% csrf_token %}
+
+    <div class="recipe-card" id="recipeCard" style="display: block;">
+        {% if recipe.image %}
+            <img id="recipeImage" src="{{ recipe.image.url }}" alt="Зображення рецепту" style="display: block;">
+        {% endif %}
+        <div class="recipe-content">
+            <h2 id="recipeTitle">{{ recipe.title }}</h2>
+            <ul id="ingredientsList">
+                {% for ingredient in recipe.ingredients %}
+                    <li>{{ ingredient }}</li>
+                {% endfor %}
+            </ul>
+            <div id="time" class="time">Час приготування: {{ recipe.time }}хв</div>
+            <ol id="recipeSteps">
+                {% for step in recipe.steps %}
+                    <li>{{ step }}</li>
+                {% endfor %}
+            </ol>
+        </div>
+
+        <div class="recipe-comment-section">
+            <h3>Ваш коментар:</h3>
+            <div class="comment-container">
+                <textarea id="commentInput" class="comment-textarea" placeholder="Додайте свій коментар тут...">{{ recipe.comment|default:'' }}</textarea>
+                <button id="saveCommentBtn" class="btn-save" data-recipe-id="{{ recipe.id }}">Зберегти</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% block scripts %}
+<script src="{% static 'Accounts/js/update_comment.js' %}"></script>
+{% endblock %}
+{% endblock %}

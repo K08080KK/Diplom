@@ -1,0 +1,120 @@
+/* === СТИЛИ ДЛЯ СТРАНИЦ УВЕДОМЛЕНИЙ (EMAIL & ERRORS) === */
+
+/* Основной контейнер на весь экран */
+.auth-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 200px); /* Вычитаем примерную высоту хедера и футера */
+    padding: 40px 20px;
+    background: #f0f4f8;
+}
+
+/* Карточка сообщения */
+.auth-card {
+    width: 100%;
+    max-width: 500px;
+    background: #ffffff;
+    padding: 50px 40px;
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+/* Стили заголовков внутри карточек состояния */
+.status-card h2 {
+    color: #444;
+    font-size: 1.8em;
+    margin: 20px 0 15px 0;
+    line-height: 1.3;
+}
+
+.status-card p {
+    color: #666;
+    font-size: 1.05em;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+/* Большая иконка (Emoji) */
+.status-icon {
+    font-size: 4.5em;
+    display: block;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+}
+
+/* Цвет иконки для успешного действия */
+.status-icon.success {
+    color: #6fa8dc;
+}
+
+/* Кнопка (стилизация ссылки под кнопку) */
+.auth-button {
+    display: inline-block;
+    width: 100%;
+    padding: 15px 25px;
+    background: #6fa8dc;
+    border: none;
+    border-radius: 14px;
+    color: white !important; /* !important чтобы перебить стандартные стили ссылок */
+    font-size: 1.1em;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s;
+    box-sizing: border-box;
+}
+
+.auth-button:hover {
+    background: #89c4f4;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(111, 168, 220, 0.4);
+}
+
+/* Второстепенная кнопка (На головну) */
+.auth-button.secondary {
+    background: #e1f0fb;
+    color: #6fa8dc !important;
+}
+
+.auth-button.secondary:hover {
+    background: #cde6f9;
+}
+
+/* Футер карточки */
+.auth-footer {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.auth-footer p {
+    font-size: 0.95em;
+    color: #888;
+}
+
+.auth-footer b {
+    color: #e74c3c; /* Акцент на слове "Спам" */
+}
+
+.auth-footer a {
+    color: #6fa8dc;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Адаптивность для мобилок */
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 30px 20px;
+    }
+    .status-card h2 {
+        font-size: 1.5em;
+    }
+}
