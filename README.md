@@ -19,5 +19,5 @@ CSS
 
 ## Опублікований продукт
 
-cookbook.pythonanywhere.com
+https://cookbook.pythonanywhere.com
 
